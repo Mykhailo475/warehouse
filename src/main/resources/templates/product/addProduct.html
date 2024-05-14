@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Товар</title>
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+
+    <h2>Ви ввійшли в систему як <span sec:authentication="name"></span></h2>
+
+    <hr>
+        <p>
+         Ррозділ управління товарами (реєстрація товару)
+        </p>
+    <hr>
+    <div th:if="${param.notFound}" class="alert alert-danger">
+        Склад не існує.
+    </div>
+    <div th:if="${param.overflow}" class="alert alert-danger">
+        Склад не може вмістити таку кількість товару
+    </div>
+    <div th:if="${param.illegal}" class="alert alert-danger">
+        Недопустимі дані при створенні товару
+    </div>
+
+        <h2>Створити товар</h2>
+    <hr>
+    <form th:action="@{/products/addProduct}" th:object="${product}" method="post">
+        <label>Ім'я:           <input type="text"   th:field="*{name}"         id="name" required /></label><br>
+        <label>Опис:      <input type="text"   th:field="*{description}"  id="description" required /></label><br>
+        <label>Категорія:     <input type="text"   th:field="*{category}"     id="category" required /></label><br>
+        <label>Вартість:     <input type="text"   th:field="*{price}"        id="price" required /></label><br>
+        <label>Кількість:    <input type="number" th:field="*{quantity}"     id="quantity" required /></label><br>
+        <label>Дата створення: <input type="date"   th:field="*{creationDate}" id="creationDate" required /></label><br>
+        <label>Оберіть склад:
+            <select th:field="*{warehouse}" required>
+                <option th:each="warehouse : ${warehouses?.orElse(null)}" th:value="${warehouse.id}" th:text="${warehouse.name}"></option>
+            </select>
+        </label><br>
+
+        <input type="submit" value="Зареєструвати товар" />
+        <a href="/warehouses">Відмінити реєстрацію товару</a>
+    </form>
+
+    <h3><a href="/warehouses">Повернутися до складів</a></h3>
+
+    <h3><a href="/company/manage">Повернутися до основного меню</a></h3>
+
+</div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

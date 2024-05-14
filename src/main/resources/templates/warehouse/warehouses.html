@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Склади</title>
+    <style>
+        table {
+            border-spacing: 10px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        th button {
+            background: none;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+
+    <h2>Ви ввійшли в систему як <span sec:authentication="name"></span></h2>
+
+    <div th:if="${param.notFound}" class="alert alert-danger">
+        Склад не існує.
+    </div>
+    <div th:if="${param.overflow}" class="alert alert-danger">
+        Склад не може вмістити таку кількість товару
+    </div>
+
+    <div th:if="${param.illegal}" class="alert alert-danger">
+        Недопустимі дані для ствроення продукту
+    </div>
+
+    <hr>
+    <p>
+        Розділ управління складами
+    </p>
+    <hr>
+
+    <h4><a href="/warehouses/create">Зареєструвати склад</a></h4>
+
+    <tr>
+        <td colspan="7">
+            <form th:action="@{'/warehouses/search'}" method="get">
+                <input type="text" name="name" placeholder="Пошук за іменем складу">
+                <button type="submit">Пошук</button>
+            </form>
+        </td>
+    </tr>
+
+    <table id="myTable">
+        <thead>
+        <tr>
+            <th>
+                <form method="get" id="sortForm">
+                    <button type="submit" id="name">Ім'я складу</button>
+                </form>
+            </th>
+            <th>
+                <form method="get">
+                    <button type="submit">Адреса</button>
+                </form>
+            </th>
+            <th>
+                <form method="get">
+                    <button type="submit">Місткість для 1го товару</button>
+                </form>
+            </th>
+            <th>
+                <form method="get">
+                    <button type="submit">Дата створення</button>
+                </form>
+            </th>
+            <th>Видалити</th>
+            <th>Додати товар</th>
+            <th>Список товарів</th>
+        </tr>
+        </thead>
+
+        <tbody id="tableBody">
+        <tr th:each="warehouse : ${warehouses.orElse(null)}">
+            <td th:if="${warehouse.name}" th:text="${warehouse.name}"></td>
+            <td th:if="${warehouse.address}" th:text="${warehouse.address}"></td>
+            <td th:if="${warehouse.capacity}" th:text="${warehouse.capacity}"></td>
+            <td th:if="${warehouse.creationDate}" th:text="${warehouse.creationDate}"></td>
+            <td>
+                <form th:action="@{'/warehouses/delete/' + ${warehouse.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">Видалити</button>
+                </form>
+            </td>
+            <td>
+                <a th:href="@{'/products/addProduct?warehouseId='+${warehouse.id}}" href="/products">Додати товар</a>
+            </td>
+            <td>
+                <a th:href="@{'/warehouses/'+${warehouse.id}+'/products'}" href="/products">Список товарів</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <h3><a href="/company/manage">Повернутися в меню</a></h3>
+
+</div>
+
+<div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Склад</title>
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+
+    <h2>Ви ввійшли в систему як <span sec:authentication="name"></span></h2>
+
+    <hr>
+        <p>
+        Розділ управління складами (реєстрація складу)
+        </p>
+    <hr>
+
+    <hr>
+        <h2>Створити склад</h2>
+    <hr>
+    <form class="mb-3" th:action="@{/warehouses/create}" th:object="${warehouse}" method="post">
+        <div class="form-group mb-3">
+            <label for="name">Ім'я складу</label>
+            <input type="text" class="form-control" id="name" placeholder="Ім'я складу" value="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="address">Адреса</label>
+            <input type="text" class="form-control" id="address" placeholder="Адреса" value="address" th:field="*{address}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="capacity">Місткість для 1го товару</label>
+            <input type="number" class="form-control" id="capacity" placeholder="123" value="capacity" th:field="*{capacity}" required>
+        </div>
+
+        <div class="form-group mb-3 ">
+            <label for="creationDate">Дата створення</label>
+            <input type="date" class="form-control" id="creationDate" placeholder="01.01.2000" value="01.01.2001" th:field="*{creationDate}" required>
+        </div>
+
+        <input type="submit" value="Зареєструвати склад" />
+        <a href="/warehouses">Відмінити реєстрацію складу</a>
+    </form>
+    <hr>
+
+    <h3><a href="/warehouses">Повернутися до складів</a></h3>
+
+    <h3><a href="/company/manage">Повернутися до основного меню</a></h3>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

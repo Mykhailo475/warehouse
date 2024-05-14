@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Головна</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+    <br>
+    <hr><h1>Система управління складом</h1><hr>
+    <br>
+    <p>
+        Ця програма призначена для управління складськими операціями в компанії. Користувачі можуть переглядати,
+        додавати, редагувати та видаляти інформацію про товари, склади та замовлення, а також відстежувати їх статуси.
+    </p>
+    <div th:if="${param.error}" class="alert alert-danger">
+        Неправильний логін чи пароль.
+    </div>
+</div>
+
+</body>
+</html>

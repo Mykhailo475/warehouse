@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Товари</title>
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+
+    <h2>Ви ввійшли в систему як <span sec:authentication="name"></span></h2>
+
+    <hr>
+        <p>
+         Головний розділ управління товарами
+        </p>
+    <hr>
+
+    <tr>
+        <td colspan="7">
+            <form th:action="@{'/products/search' }" method="get">
+                <input type="text" name="name" placeholder="Пошук за іменем">
+                <input type="hidden" name="warehouseId" th:value="${warehouseId}">
+                <button type="submit">Пошук</button>
+            </form>
+        </td>
+    </tr>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Ім'я</th>
+            <th>Опис</th>
+            <th>Категорія</th>
+            <th>Вартість</th>
+            <th>Кількість</th>
+            <th>Дата створення</th>
+            <th>Назва складу</th>
+            <th>Номер складу</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.creationDate}"></td>
+            <td th:text="${product.warehouse.name}"></td>
+            <td th:text="${product.warehouse.id}"></td>
+            <td>
+                <form th:action="@{'/products/' + ${product.id} + '/edit'}" method="post" th:object="${product}">
+                    <input type="hidden" name="_method" value="put">
+                    <input type="text" th:field="*{name}" placeholder="Ім'я продукту"/>
+                    <input type="text" th:field="*{description}" placeholder="Опис"/>
+                    <input type="text" th:field="*{category}" placeholder="Категорія"/>
+                    <input type="number" step="0.01" th:field="*{price}" placeholder="Вартість"/>
+                    <input type="number" th:field="*{quantity}" placeholder="Кількість"/>
+                    <button type="submit">Редагувати</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{'/products/delete/' + ${product.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3><a href="/company/manage">Повернутися до меню</a></h3>
+
+</div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

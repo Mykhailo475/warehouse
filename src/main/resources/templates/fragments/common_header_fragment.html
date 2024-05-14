@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header class="p-3 bg-dark text-white" th:fragment="head">
+    <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/" class="nav-link px-2 text-white">Система управління складом</a></li>
+                    <li><a href="/company/manage" class="nav-link px-2 text-white">Компанія</a></li>
+                    <li><a href="/warehouses" class="nav-link px-2 text-white">Склади</a></li>
+                    <li><a href="/orders" class="nav-link px-2 text-white">Замовлення</a></li>
+                    <li><a href="/orders/manage" class="nav-link px-2 text-white">Керування замовленнями</a></li>
+                </ul>
+
+                <div class="text-end">
+                    <a th:href="@{/login}">
+                        <button type="button" class="btn btn-outline-light me-2" sec:authorize="isAnonymous()">Логін</button>
+                    </a>
+                    <a th:href="@{/sign-up}" sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-warning">Зареєструватися</button>
+                    </a>
+                    <a th:href="@{/logout}" sec:authorize="isAuthenticated()">
+                        <button type="button" class="btn btn-warning">Вийти</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+</header>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Працівники</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:replace="~{fragments/common_header_fragment :: head}"></header>
+
+<div class="container">
+
+    <div th:if="${param.alreadyExists}" class="alert alert-warning">
+        У системі вже є працівник з таким номером телефона / поштою
+    </div>
+
+    <form th:action="@{/employees/create}" th:object="${employeeRegistrationForm}" method="post">
+        <div class="px-4">
+            <div>
+                <label for="create_firstname" class="form-label">Ім'я:</label>
+                <input id="create_firstname" class="form-control" type="text" name="firstname" th:field="*{firstname}">
+            </div>
+
+            <div>
+                <label for="create_lastname">Прізвише:</label>
+                <input id="create_lastname" class="form-control" type="text" name="lastname" th:field="*{lastname}">
+            </div>
+
+            <div>
+                <label for="create_patronymic">По-батькові:</label>
+                <input id="create_patronymic" class="form-control" type="text" name="patronymic" th:field="*{patronymic}">
+            </div>
+
+            <div>
+                <label for="create_email">Email:</label>
+                <input id="create_email" class="form-control" type="text" name="email" th:field="*{email}">
+            </div>
+            <div>
+                <label for="telephone">Телефон:</label>
+                <input id="telephone" class="form-control" type="number" name="phone" th:field="*{telephone}">
+            </div>
+
+            <div>
+                <label for="create_password">Створіть пароль:</label>
+                <input id="create_password" class="form-control" type="password" name="password" th:field="*{password}">
+            </div>
+
+            <br><button id="saveButtonEmployee" class="btn btn-outline-primary" type="submit">Зареєструвати працівника</button>
+        </div>
+    </form>
+
+    <div class="px-4">
+        <br><button onclick="activateTable()" class="btn btn-outline-primary">Показати всіх працівників</button>
+    </div>
+
+
+    <table id="saveTableEmployee" style="display: none">
+        <tr th:if="${#lists.isEmpty(employees)}">
+            <td colspan="2">
+                Список працівників пустий
+            </td>
+        </tr>
+
+    </table>
+
+    <table id="showTable" style="display: none; border-spacing: 60px;">
+        <tr>
+            <th>Ім'я:</th>
+            <th>Прізвище:</th>
+            <th>По-батькові:</th>
+            <th>Телефон:</th>
+        </tr>
+        <tr th:each="employee_ : ${employees}">
+            <td th:text="${employee_.getFirstname()}">firstname</td>
+            <td th:text="${employee_.getLastname()}">lastname</td>
+            <td th:text="${employee_.getPatronymic()}">patronymic</td>
+            <td th:text="${employee_.telephone}">telephone</td>
+        </tr>
+    </table>
+
+    <div class="px-4">
+        <br><button onclick="redirectToLink()" class="btn btn-primary">Вийти</button>
+    </div>
+    <h3><a href="/company/manage">Повернутися в меню</a></h3>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function redirectToLink() {
+        window.location.href = "/home";
+    }
+
+    function activateTable() {
+        var table = document.getElementById("showTable");
+        if (table.style.display === "none") {
+            table.style.display = "table";
+        } else {
+            table.style.display = "none";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var saveTable = document.getElementById("saveTableEmployee");
+        var saveButton = document.getElementById("saveButtonEmployee");
+
+        setTimeout(function () {
+            saveTable.style.display = "none";
+        }, 5000);
+    });
+</script>
+</body>
+</html>
